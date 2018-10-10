@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+        <record id="hr_contract_view_form_l10n_pf_payroll" model="ir.ui.view">
+            <field name="name">hr.contract.view.form.l10n.pf.payroll</field>
+            <field name="model">hr.contract</field>
+            <field name="priority" eval="50" />
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                 <xpath expr="//field[@name='wage']" position="after">
+                       <field name="heure_mensuelle" />
+                       <field name="taux_horaire" />
+                       <field name="conge_mensuel" />
+                       <field name="indemnite_conge_paye" />
+                       <field name="taux_anciennete" />
+                 </xpath>
+            </field>
+        </record>
+
+        <record id="hr_payslip_form_l10n_pf_payroll" model="ir.ui.view">
+            <field name="name">hr.payslip.form.l10n.pf.payroll</field>
+            <field name="model">hr.payslip</field>
+            <field name="priority">20</field>
+            <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+            <field name="arch" type="xml">
+            <data>
+                 <xpath expr="//field[@name='paid']" position="after">
+                     <field name="payment_mode"/>
+                 </xpath>
+            </data>
+            </field>
+        </record>
+
+	<record model="ir.ui.view" id="hr.employee_view_form_inherit">
+             <field name="name">hr.employee.view.form.inherit</field>
+             <field name="model">hr.employee</field>
+             <field name="inherit_id" ref="hr.view_employee_form" />
+             <field name="priority" eval="50" />
+             <field name="type">form</field>
+             <field name="arch" type="xml">
+                  <xpath expr="//field[@name='identification_id']" position="after">
+                       <field name="dn_cps" />
+                  </xpath>
+             </field>
+        </record>
+
+	<record model="ir.ui.view" id="hr.holiday_status_form_inherit">
+             <field name="name">hr.holidays.status.inherit</field>
+             <field name="model">hr.holidays.status</field>
+             <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form" />
+             <field name="priority" eval="50" />
+             <field name="type">form</field>
+             <field name="arch" type="xml">
+                  <xpath expr="//field[@name='name']" position="after">
+                       <field name="code" />
+                  </xpath>
+             </field>
+        </record>
+
+	<!-- Cron task -->
+	<record id="ir_cron_scheduler_hr_holidays" model="ir.cron">
+         	<field name="name">Ajout mensuel de congés</field>
+        	<field name="user_id" ref="base.user_root"/>
+        	<field name="interval_number">1</field>
+        	<field name="interval_type">months</field>
+        	<field name="numbercall">-1</field>
+        	<field eval="False" name="doall"/>
+        	<field eval="'hr.holidays'" name="model"/>
+        	<field eval="'add_month_holiday'" name="function"/>
+    	</record>
+
+	<!-- Cron task -->
+	<record id="ir_cron_scheduler_hr_seniority" model="ir.cron">
+         	<field name="name">Mise à jour de l'anciennetés</field>
+        	<field name="user_id" ref="base.user_root"/>
+        	<field name="interval_number">1</field>
+        	<field name="interval_type">weeks</field>
+        	<field name="numbercall">-1</field>
+        	<field eval="False" name="doall"/>
+        	<field eval="'hr.contract'" name="model"/>
+        	<field eval="'update_anciennete'" name="function"/>
+    	</record>
+
+	<record model="ir.ui.view" id="hr.payslip_form_inherit">
+             <field name="name">hr.payslip.form.inherit</field>
+             <field name="model">hr.payslip</field>
+             <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form" />
+             <field name="priority" eval="50" />
+             <field name="type">form</field>
+             <field name="arch" type="xml">
+                  <xpath expr="//field[@name='credit_note']" position="after">
+                       <field name="acompte" />
+                       <field name="heure_comp" />
+                       <field name="heure_sup_125" />
+                       <field name="heure_sup_150" />
+                       <field name="heure_sup_165" />
+                       <field name="heure_sup_175" />
+                       <field name="heure_sup_200" />
+		       <field name="conge_acquis" />
+                  </xpath>
+             </field>
+        </record>
+
+	<record model="ir.ui.view" id="hr.salary_rule__view_form_inherit">
+             <field name="name">hr_salary.rule.inherit</field>
+             <field name="model">hr.salary.rule</field>
+             <field name="inherit_id" ref="hr_payroll.hr_salary_rule_form" />
+             <field name="priority" eval="50" />
+             <field name="type">form</field>
+             <field name="arch" type="xml">
+                  <xpath expr="//field[@name='amount_python_compute']" position="before">
+			<field colspan="4" name="amount_python_base" attrs="{'invisible':[('amount_select','&lt;&gt;','code')]}"/>
+                  </xpath>
+             </field>
+        </record>
+  </data>
+</odoo>

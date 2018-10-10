@@ -1,0 +1,235 @@
+<?xml version="1.0"?>
+<odoo>
+<template id="l10n_pf_hr_payroll.report_fiche_paye">
+    <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="report.internal_layout">
+                <div class="page" style="font-size: 9pt!important;font-family:Helvetica,Verdana,Arial;">
+                    <div class="oe_structure"/>
+					<style>
+						table th, table td{
+							padding:3px !important;
+						}
+						table th {
+							text-align: center
+						}
+						.row {
+							margin-top: 20px !important;
+						}
+					</style>
+                    <div class="row">
+                        <div>
+                            <h2 class="text-center" style="background-color: #00B7C4; padding: 10px 0">Bulletin de paie</h2>
+                            <h4 class="text-center">Paie du <span t-field="o.date_from"/> au <span t-field="o.date_to"/></h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div>
+                            <table class="table">
+								<thead>
+									<tr style="background-color: gainsboro">
+										<th colspan="2"><strong>EMPLOYEUR</strong></th>
+										<th colspan="2"><strong>SALARIÉ</strong></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><strong>Nom :</strong></td>
+										<td><span t-esc="o.employee_id.contract_id.department_id.company_id.name or '_'"/></td>
+										<td><strong>Nom :</strong></td>
+										<td><span t-esc="o.employee_id.name or '_'"/></td>
+									</tr>
+									<tr>
+										<td><strong>Adresse :</strong></td>
+										<td>
+											<span t-esc="o.employee_id.contract_id.department_id.company_id.street or ''"/><br/>
+											<span t-esc="o.employee_id.contract_id.department_id.company_id.street2 or ''"/><br/>
+											<span t-esc="o.employee_id.contract_id.department_id.company_id.zip or ''"/> <span t-esc="o.employee_id.company_id.city or ''"/>
+										</td>
+										<td><strong>Adresse :</strong></td>
+																				<td>
+											<span t-esc="o.employee_id.address_home_id.street or ''"/><br/>
+											<span t-esc="o.employee_id.address_home_id.street2 or ''"/><br/>
+											<span t-esc="o.employee_id.address_home_id.zip or ''"/> <span t-esc="o.employee_id.address_home_id.city or ''"/>
+										</td>
+									</tr>
+									<tr>
+										<td><strong>Numéro TAHITI :</strong></td>
+										<td><span t-esc="o.employee_id.contract_id.department_id.company_id.tahiti or '_'"/></td>
+										<td><strong>DN :</strong></td>
+										<td><span t-esc="o.employee_id.dn_cps"/></td>
+									</tr>
+									<tr>
+										<td><strong>Numéro CPS :</strong></td>
+										<td><span t-esc="o.employee_id.contract_id.department_id.company_id.cps or '_'"/></td>
+										<td><strong>Emploi :</strong></td>
+										<td><span t-esc="o.employee_id.contract_id.job_id.name"/></td>
+									</tr>
+									<tr>
+										<td><strong>Activité :</strong></td>
+										<td><span t-esc="o.employee_id.contract_id.department_id.company_id.ape or '_'"/></td>
+										<td><strong>Horaire :</strong></td>
+										<td><span t-esc="o.employee_id.contract_id.heure_mensuelle"/></td>
+									</tr>
+									<tr>
+										<td><strong> </strong></td>
+										<td><span> </span></td>
+										<td><strong>Ancienneté (taux) :</strong></td>
+										<td><span t-esc="'{0:n}'.format(int(o.employee_id.contract_id.taux_anciennete))"/></td>
+									</tr>
+									<tr>
+										<td><strong> </strong></td>
+										<td><span> </span></td>
+										<td><strong>RIB :</strong></td>
+										<td><span t-esc="o.employee_id.bank_account_id.acc_number"/></td>
+									</tr>
+								</tbody>
+                            </table>
+                        </div>
+                    </div>
+					<div class="row">
+						<table class="table table-bordered">
+							<thead>
+								<tr style="background-color: gainsboro">
+									<th>&amp;nbsp;</th>
+									<th colspan="4" class="text-center">Part Salariale</th>
+									<th colspan="2" class="text-center col-md-2">Part Patronale</th>
+								</tr>
+								<tr style="background-color: gainsboro">
+									<th>Désignation</th>
+									<th>Base</th>
+									<th>Taux / Qté</th>
+									<th>Gain</th>
+									<th>Retenue</th>
+									<th>Taux</th>
+									<th>Retenue</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr t-foreach="get_payslip_lines(o.line_ids)" t-as="p">
+									<td class="text-left">
+										<t t-if="p.code == 'BRUT'">
+											<strong>TOTAL BRUT</strong>
+										</t>
+										<t t-if="p.code == 'COT_S'">
+											<strong>TOTAL COTISATIONS</strong>
+										</t>
+										<t t-if="p.code != 'BRUT' and p.code != 'COT_S'">
+											<span t-esc="p.name or ''"/>
+										</t>
+									</td>
+									<td class="text-right">
+										<t t-if="p.amount_select== 'percentage' and p.amount &gt; 0">
+											<span t-esc="'{0:n}'.format(int(round(p.amount))) or ''"/>
+										</t> 
+										<t t-if="p.amount_select == 'fix' and p.quantity &gt; 0">
+											<span t-esc="'{0:.2f}'.format(p.quantity).replace('.',',') or ''"/>
+										</t>
+									    <t t-if="p.amount_select == 'code' and p.amount &gt; 0 and p.quantity &gt; 0 and p.code != 'BRUT' and p.code != 'BASE' and p.code != 'RET_ACPT'">
+											<span t-esc="'{0:n}'.format(int(round(p.amount))) or ''"/>
+										</t>
+									</td>
+									<td class="text-right">
+										<t t-if="p.amount_select == 'percentage' and p.rate &gt; 0">
+											<span t-esc="'{0:.2f}'.format(p.rate).replace('.',',') or ''"/>
+										</t>
+										<t t-if="p.amount_select == 'code' and p.quantity &gt; 0 and p.code != 'BRUT' and p.code != 'BASE' and p.code != 'COT_S' and p.code != 'RET_ACPT'">
+											<span t-esc="'{0:.2f}'.format(p.quantity).replace('.',',') or ''"/>
+										</t>
+									</td>
+									<td class="text-right">
+										<t t-if="not(p.code.startswith('RET')) and not(p.code.startswith('DED')) and not(p.code.startswith('COT_S')) and p.code != 'BRUT' and p.total &gt; 0">
+											<span t-esc="'{0:n}'.format(int(round(p.total))) or ''"/>
+										</t>
+										<t t-if="not(p.code.startswith('RET')) and not(p.code.startswith('DED')) and not(p.code.startswith('COT_S')) and p.code == 'BRUT' and p.total &gt; 0">
+											<strong><span t-esc="'{0:n}'.format(int(round(p.total))) or ''"/></strong>
+										</t>
+									</td>
+									<td class="text-right">
+										<t t-if="(p.code.startswith('RET') or p.code.startswith('DED') or (p.code.startswith('COT_S')) and p.code != 'COT_S') and p.total &gt; 0">
+											<span t-esc="'{0:n}'.format(int(round(p.total))) or ''"/>
+										</t>
+										<t t-if="p.code == 'COT_S'">
+											<strong><span t-esc="'{0:n}'.format(int(round(p.total))) or ''"/></strong>
+										</t>
+									</td>
+									<td class="text-right">
+										<t t-if="p.code != 'COT_S'">
+											<span t-esc="get_employer_line(o, p) and '{0:.2f}'.format(get_employer_line(o, p).rate).replace('.',',') or ''"/>
+										</t>
+									</td>
+									<td class="text-right">
+										<t t-if="p.code != 'COT_S'">
+											<span t-esc="get_employer_line(o,p) and '{0:n}'.format(int(round(get_employer_line(o,p).total))) or ''"/>
+										</t>
+										<t t-if="p.code == 'COT_S'">
+											<strong><span t-esc="get_employer_line(o,p) and '{0:n}'.format(int(round(get_employer_line(o,p).total))) or ''"/></strong>
+										</t>
+									</td>
+									
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="row">
+						<table class="table table-bordered text-center">
+							<thead>
+								<tr>
+									<th>Salaire Brut</th>
+	                <th>CPS - Salarié</th>
+	                <th>CST</th>
+									<th>Charges Patronales</th>
+									<th>Heures travaillées</th>
+									<th style="background-color: #00B7C4">Net à payer</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="text-center"><span t-esc="'{0:n}'.format(int(round(get_total_by_rule_category(o, 'BRUT'))))"/></td>
+									<td class="text-center"><span t-esc="'{0:n}'.format(int(round(get_total_by_rule_category(o, 'COT_S_CPS'))))"/></td>
+									<td class="text-center"><span t-esc="'{0:n}'.format(int(round(get_total_by_rule_category(o, 'COT_S_CST'))))"/></td>
+									<td class="text-center"><span t-esc="'{0:n}'.format(int(round(get_total_by_rule_category(o, 'COT_P'))))"/></td>
+									<td class="text-center"><span t-esc="'{0:n}'.format(int(round(get_total_by_rule_category(o, 'HEURE_TRAV'))))"/></td>
+									<td class="text-center"><strong><span t-esc="'{0:n}'.format(int(round(get_total_by_rule_category(o, 'NETAPAYER'))))"/><span> XPF</span></strong></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="row">
+						<div class="col-xs-4 pull-left">
+                            <table class="table table-bordered table-sm text-center">
+                                <thead>
+                                    <tr>
+                                        <th colspan="3" class="text-center">Congés</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Acquis</th>
+                                        <th>Pris</th>
+                                        <th>Restant</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span t-esc="'{0:.1f}'.format(o.employee_id.contract_id.conge_mensuel).replace('.',',')"/></td>
+                                        <t t-set="conges" t-value="0"/>
+                                        <t t-foreach="o.worked_days_line_ids" t-as="wd">
+                                            <t t-if="wd.code == 'CONGE'">
+                                                <t t-set="conges" t-value="wd.number_of_days"/>
+                                            </t>
+                                        </t>
+                                        <td><span t-esc="'{0:n}'.format(conges)"/></td>
+                                        <td><span t-esc="'{0:n}'.format(o.employee_id.remaining_leaves)"/></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+					</div>
+					<div class="row">
+							<p class="mt32 text-center">Pour vous aider à faire valoir vos droits, conservez ce bulletin de paie sans limitation de durée.</p>
+                    </div>
+				</div>
+            </t>
+        </t>
+    </t>
+</template>
+</odoo>
