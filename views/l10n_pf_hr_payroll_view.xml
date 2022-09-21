@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="hr_contract_view_form_l10n_pf_payroll" model="ir.ui.view">
+            <field name="name">hr.contract.view.form.l10n.pf.payroll</field>
+            <field name="model">hr.contract</field>
+            <field name="priority" eval="50" />
+            <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='wage']" position="after">
+                    <label for="heure_mensuelle"/>
+                    <div class="o_row" name="heure_mensuelle">
+                        <field name="heure_mensuelle" />
+                    </div>
+                    <label for="taux_horaire"/>
+                    <div class="o_row" name="taux_horaire">
+                        <field name="taux_horaire" />
+                    </div>
+                    <label for="conge_mensuel"/>
+                    <div class="o_row" name="conge_mensuel">
+                        <field name="conge_mensuel" />
+                    </div>
+                    <label for="indemnite_conge_paye"/>
+                    <div class="o_row" name="indemnite_conge_paye">
+                        <field name="indemnite_conge_paye" />
+                    </div>
+                    <label for="taux_anciennete"/>
+                    <div class="o_row" name="taux_anciennete">
+                        <field name="taux_anciennete" />
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="hr_payslip_form_l10n_pf_payroll" model="ir.ui.view">
+            <field name="name">hr.payslip.form.l10n.pf.payroll</field>
+            <field name="model">hr.payslip</field>
+            <field name="priority">20</field>
+            <field name="inherit_id" ref="payroll.hr_payslip_view_form"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='paid']" position="after">
+                        <field name="payment_mode"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="l10n_pf_payroll_employee_view_form">
+            <field name="name">hr.employee.view.form.payroll.pf</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form" />
+            <field name="priority" eval="50" />
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='identification_id']" position="after">
+                    <field name="dn_cps" />
+                </xpath>
+            </field>
+        </record>
+
+        <!--
+                <record id="ir_cron_scheduler_hr_leave" model="ir.cron">
+                    <field name="name">Ajout mensuel de congés</field>
+                    <field name="user_id" ref="base.user_root"/>
+                    <field name="model_id" ref="hr_holidays.model_hr_leave"/>
+                    <field name="interval_number">1</field>
+                    <field name="interval_type">months</field>
+                    <field name="numbercall">-1</field>
+                    <field name="code">model.add_month_holiday()</field>
+                    <field eval="False" name="doall"/>
+                </record>
+        -->
+
+        <record id="ir_cron_scheduler_hr_seniority" model="ir.cron">
+            <field name="name">Mise à jour de l'anciennetés</field>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="model_id" ref="hr_contract.model_hr_contract"/>
+            <field name="interval_type">weeks</field>
+            <field name="numbercall">-1</field>
+            <field name="code">model.update_anciennete()</field>
+            <field eval="False" name="doall"/>
+        </record>
+
+        <record model="ir.ui.view" id="payslip_form_inherit">
+            <field name="name">hr.payslip.form.inherit</field>
+            <field name="model">hr.payslip</field>
+            <field name="inherit_id" ref="payroll.hr_payslip_view_form" />
+            <field name="priority" eval="50" />
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="/form/sheet/notebook/page[1]" position="replace">
+                    <page string="Général">
+                        <group>
+                            <group string="Heures">
+                                <field name="heure_absence" />
+                                <field name="heure_comp" />
+                                <field name="heure_sup_125" />
+                                <field name="heure_sup_150" />
+                                <field name="heure_sup_165" />
+                                <field name="heure_sup_175" />
+                                <field name="heure_sup_200" />
+                            </group>
+                            <group string="Congés" >
+                                <field name="conge_acquis" />
+                                <field name="conge_pris" readonly="1" force_save="1" />
+                                <field name="conge_restant" readonly="1" force_save="1" />
+                                <field name="attribution_conge_id" attrs="{'invisible':[('state', '!=', 'done')]}" />
+                                <field name="conge_enregistre_ids" domain="[('employee_id','=',employee_id),('payslip_status','=',False)]">
+                                    <tree>
+                                        <field name="name" />
+                                        <field name="number_of_days" />
+                                    </tree>
+                                </field>
+                                <button
+                                        string="Recalculer les congés pris"
+                                        name="action_compute_holidays"
+                                        type="object"
+                                        states="draft"
+                                        class="oe_highlight"
+                                />
+                            </group>
+                            <group string="Divers">
+                                <field name="acompte" />
+                            </group>
+                            <group string="Contrat">
+                                <field name="anciennete" />
+                                <field name="heure_contrat" />
+                                <field name="wage" />
+                                <field name="taux_horaire" />
+                                <field name="indemnite_conge_paye" />
+                            </group>
+                        </group>
+                    </page>
+                    <page string="Montants utilisés dans les calculs">
+                        <separator string="Montants en jours ou en heures"/>
+                        <field name="worked_days_line_ids">
+                            <tree string="Jours ou heures" editable="bottom">
+                                <field name="name" required="False"/>
+                                <field name="code"/>
+                                <field name="number_of_days" sum="Total Working Days"/>
+                                <field name="number_of_hours"/>
+                                <field name="contract_id" required="False"/>
+                                <field name="sequence" invisible="True"/>
+                            </tree>
+                            <form string="Jours ou heures">
+                                <group col="4">
+                                    <field name="name" required="False"/>
+                                    <field name="code"/>
+                                    <field name="sequence"/>
+                                    <field name="number_of_days"/>
+                                    <field name="number_of_hours"/>
+                                    <field name="contract_id" required="False"/>
+                                </group>
+                            </form>
+                        </field>
+                        <separator string="Autres montants"/>
+                        <field name="input_line_ids" colspan="4" nolabel="1">
+                            <tree string="Autres montants" editable="bottom">
+                                <field name="name" required="False"/>
+                                <field name="code"/>
+                                <field name="amount"/>
+                                <field name="contract_id" required="False"/>
+                                <field name="sequence" invisible="True"/>
+                            </tree>
+                            <form string="Autres montants">
+                                <group col="4">
+                                    <field name="name" required="False"/>
+                                    <field name="code"/>
+                                    <field name="sequence"/>
+                                    <field name="amount"/>
+                                    <field name="contract_id" required="False"/>
+                                </group>
+                            </form>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="salary_rule__view_form_inherit">
+            <field name="name">hr_salary.rule.inherit</field>
+            <field name="model">hr.salary.rule</field>
+            <field name="inherit_id" ref="payroll.hr_salary_rule_view_form" />
+            <field name="priority" eval="50" />
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='amount_python_compute']" position="before">
+                    <field
+                            colspan="4"
+                            name="amount_python_base"
+                            attrs="{'invisible':[('amount_select','!=','code')]}"
+                            widget="ace"
+                            options="{'mode': 'python'}"
+                            id="amount_python_base"
+                    />
+                    <newline />
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
