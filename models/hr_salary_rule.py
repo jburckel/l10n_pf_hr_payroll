@@ -15,7 +15,7 @@ class HRSalaryRule(models.Model):
                  and the rate
         :rtype: (float, float, float)
         """
-        amount, qty, rate = super(HRSalaryRule, self)._compute_rule(localdict)
+        amount, qty, rate, name = super(HRSalaryRule, self)._compute_rule(localdict)
 
         if self.amount_select == "code" and self.amount_python_base:
             try:
@@ -37,5 +37,6 @@ Here is the error received:
         return (
             amount,
             qty,
-            rate
+            rate,
+            name
         )
