@@ -7,7 +7,7 @@ import locale
 
 class FichePayeParser(models.AbstractModel):
     _name = 'report.l10n_pf_hr_payroll.report_fiche_paye'
-    locale.setlocale(locale.LC_ALL, 'fr_FR.utf8')
+    # locale.setlocale(locale.LC_ALL, 'fr_FR.utf8')
 
 
     def get_payslip_lines(self, objs):
