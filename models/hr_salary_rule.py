@@ -15,19 +15,19 @@ class HRSalaryRule(models.Model):
                  and the rate
         :rtype: (float, float, float)
         """
-        result = super(HRSalaryRule, self)._compute_rule(localdict)
+        rule = super(HRSalaryRule, self)._compute_rule(localdict)
         
-        result["amount"] = amount
-        result["qty"] = qty
-        result["rate"] = rate
-        result["name"] = name
+        amount = rule["amount"]
+        quantity = rule["quantity"]
+        rate = rule["rate"]
+        name = rule["name"]
 
         if self.amount_select == "code" and self.amount_python_base:
             try:
                 safe_eval(
                     self.amount_python_base, localdict, mode="exec", nocopy=True
                 )
-                qty = float(localdict["result"])
+                quantity = float(localdict["result"])
             except Exception as ex:
                 raise UserError(
                     _(
@@ -41,7 +41,7 @@ Here is the error received:
                 )
         return {
             "amount": amount,
-            "qty": qty,
+            "quantity": quantity,
             "rate": rate,
             "name": name
         }
