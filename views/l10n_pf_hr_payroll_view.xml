@@ -78,7 +78,7 @@
             <field name="code">model.update_anciennete()</field>
             <field name="active" eval="True"/>
         </record>
-
+        <!--
         <record model="ir.ui.view" id="payslip_form_inherit">
             <field name="name">hr.payslip.form.inherit</field>
             <field name="model">hr.payslip</field>
@@ -173,6 +173,7 @@
                 </xpath>
             </field>
         </record>
+        -->
 
         <record model="ir.ui.view" id="salary_rule__view_form_inherit">
             <field name="name">hr_salary.rule.inherit</field>
