@@ -75,9 +75,8 @@
             <field name="interval_number">1</field>
             <field name="model_id" ref="hr_contract.model_hr_contract"/>
             <field name="interval_type">weeks</field>
-            <field name="numbercall">-1</field>
             <field name="code">model.update_anciennete()</field>
-            <field eval="False" name="doall"/>
+            <field name="active" eval="True"/>
         </record>
 
         <record model="ir.ui.view" id="payslip_form_inherit">
