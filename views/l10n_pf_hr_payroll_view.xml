@@ -38,11 +38,9 @@
             <field name="priority">20</field>
             <field name="inherit_id" ref="payroll.hr_payslip_view_form"/>
             <field name="arch" type="xml">
-                <data>
-                    <xpath expr="//field[@name='paid']" position="after">
-                        <field name="payment_mode"/>
-                    </xpath>
-                </data>
+                <xpath expr="//field[@name='paid']" position="after">
+                    <field name="payment_mode"/>
+                </xpath>
             </field>
         </record>
 
@@ -104,7 +102,7 @@
                                 <field name="conge_acquis" />
                                 <field name="conge_pris" readonly="1" force_save="1" />
                                 <field name="conge_restant" readonly="1" force_save="1" />
-                                <field name="attribution_conge_id" attrs="{'invisible':[('state', '!=', 'done')]}" />
+                                <field name="attribution_conge_id" invisible="state != 'done'" />
                                 <field name="conge_enregistre_ids" domain="[('employee_id','=',employee_id),('payslip_status','=',False)]">
                                     <tree>
                                         <field name="name" />
@@ -112,11 +110,11 @@
                                     </tree>
                                 </field>
                                 <button
-                                        string="Recalculer les congés pris"
-                                        name="action_compute_holidays"
-                                        type="object"
-                                        states="draft"
-                                        class="oe_highlight"
+                                    string="Recalculer les congés pris"
+                                    name="action_compute_holidays"
+                                    type="object"
+                                    invisible="state != 'draft'"
+                                    class="oe_highlight"
                                 />
                             </group>
                             <group string="Divers">
@@ -187,7 +185,7 @@
                     <field
                             colspan="4"
                             name="amount_python_base"
-                            attrs="{'invisible':[('amount_select','!=','code')]}"
+                            invisible="amount_select != 'code'"
                             widget="ace"
                             options="{'mode': 'python'}"
                             id="amount_python_base"
