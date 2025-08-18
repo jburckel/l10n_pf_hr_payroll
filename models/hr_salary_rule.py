@@ -40,8 +40,8 @@ Here is the error received:
                     % (self.name, self.code, repr(ex))
                 )
         return {
-            "amount": amount,
-            "quantity": quantity,
-            "rate": rate,
+            "amount": round(amount),
+            "quantity": round(quantity, 2),
+            "rate": round(rate, 2),
             "name": name
         }
