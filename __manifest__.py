@@ -8,7 +8,7 @@
     'summary': 'French Polynesia payroll localization',
     'author': 'Your Company',
     'website': 'https://www.yourcompany.com',
-    'depends': ['payroll', 'l10n_pf', 'hr_holidays'],
+    'depends': ['hr_payroll', 'l10n_pf', 'hr_holidays'],
     'description': """
 French Polynesia Payroll Rules.
 =====================
