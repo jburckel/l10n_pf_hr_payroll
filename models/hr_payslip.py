@@ -97,57 +97,57 @@ class HrPayslip(models.Model):
     acompte = fields.Float(
         string='Acomptes du mois',
         readonly=True,
+        readonly_state='draft',
         default=0,
-        states={"draft": [("readonly", False)]}
     )
 
     heure_absence = fields.Float(
         string='Heures d\'absence',
         readonly=True,
+        readonly_state='draft',
         default=0,
-        states={"draft": [("readonly", False)]}
     )
 
     heure_comp = fields.Float(
         string='Heures complémentaires',
         readonly=True,
+        readonly_state='draft',
         default=0,
-        states={"draft": [("readonly", False)]}
     )
 
     heure_sup_125 = fields.Float(
         string='Heures supp. 125%',
         readonly=True,
+        readonly_state='draft',
         default=0,
-        states={"draft": [("readonly", False)]}
     )
 
     heure_sup_150 = fields.Float(
         string='Heures supp. 150%',
         readonly=True,
+        readonly_state='draft',
         default=0,
-        states={"draft": [("readonly", False)]}
     )
 
     heure_sup_165 = fields.Float(
         string='Heures supp. 165%',
         readonly=True,
+        readonly_state='draft',
         default=0,
-        states={"draft": [("readonly", False)]}
     )
 
     heure_sup_175 = fields.Float(
         string='Heures supp. 175%',
         readonly=True,
+        readonly_state='draft',
         default=0,
-        states={"draft": [("readonly", False)]}
     )
 
     heure_sup_200 = fields.Float(
         string='Heures supp. 200%',
         readonly=True,
+        readonly_state='draft',
         default=0,
-        states={"draft": [("readonly", False)]}
     )
 
     @api.onchange('employee_id')
@@ -172,8 +172,8 @@ class HrPayslip(models.Model):
     conge_acquis = fields.Float(
         string='Congé acquis (j)',
         readonly=True,
+        readonly_state='draft',
         default=0,
-        states={"draft": [("readonly", False)]}
     )
 
     attribution_conge_id = fields.Many2one(
@@ -191,8 +191,8 @@ class HrPayslip(models.Model):
     conge_pris = fields.Float(
         string='Congé pris (j)',
         readonly=True,
+        readonly_state='draft',
         default=0,
-        states = {"draft": [("readonly", False)]}
     )
 
     heure_contrat = fields.Float(
@@ -228,15 +228,15 @@ class HrPayslip(models.Model):
     indemnite_conge_paye = fields.Float(
         string='Indemnité de congé payé',
         readonly=True,
+        readonly_state='draft',
         default=0,
-        states={"draft": [("readonly", False)]}
     )
 
     conge_enregistre_ids = fields.Many2many(
         'hr.leave',
         string='Congés pris en compte',
         readonly=True,
-        states={"draft": [("readonly", False)]}
+        readonly_state='draft',
     )
     @api.onchange('conge_enregistre_ids')
     def _update_conge_enregistre_ids(self):

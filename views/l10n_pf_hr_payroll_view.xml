@@ -6,7 +6,6 @@
             <field name="model">hr.contract</field>
             <field name="priority" eval="50" />
             <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
-            <field name="type">form</field>
             <field name="arch" type="xml">
                 <xpath expr="//div[@name='wage']" position="after">
                     <label for="heure_mensuelle"/>
@@ -52,7 +51,6 @@
             <field name="model">hr.employee</field>
             <field name="inherit_id" ref="hr.view_employee_form" />
             <field name="priority" eval="50" />
-            <field name="type">form</field>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='identification_id']" position="after">
                     <field name="dn_cps" />
@@ -89,7 +87,6 @@
             <field name="model">hr.payslip</field>
             <field name="inherit_id" ref="payroll.hr_payslip_view_form" />
             <field name="priority" eval="50" />
-            <field name="type">form</field>
             <field name="arch" type="xml">
                 <xpath expr="/form/sheet/notebook/page[1]" position="replace">
                     <page string="Général">
@@ -185,7 +182,6 @@
             <field name="model">hr.salary.rule</field>
             <field name="inherit_id" ref="payroll.hr_salary_rule_view_form" />
             <field name="priority" eval="50" />
-            <field name="type">form</field>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='amount_python_compute']" position="before">
                     <field

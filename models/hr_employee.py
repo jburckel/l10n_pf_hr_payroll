@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from time import strptime
 
 from odoo import api, fields, models
 
@@ -20,7 +19,7 @@ class HREmployee(models.Model):
         return begin.strftime("%Y-%m-%d"), end.strftime("%Y-%m-%d")
 
     def month_for_sum(self, date_from):
-        date = strptime(date_from, "%Y-%m-%d")
+        date = datetime.strptime(date_from, "%Y-%m-%d")
         begin = date - timedelta(days=1)
         begin = datetime(begin.year, begin.month, 1, 0, 0, 0)
         end = date - timedelta(days=1)

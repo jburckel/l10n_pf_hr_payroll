@@ -21,7 +21,10 @@ class HRContract(models.Model):
 
     def compute_anciennete(self, date_start):
         today = date.today()
-        delta = today - fields.Date.from_string(date_start)
+        # Using date.fromisoformat() instead of deprecated method in Odoo 18
+        if isinstance(date_start, str):
+            date_start = date.fromisoformat(date_start)
+        delta = today - date_start
         anciennete = floor(delta.days / 365.25)
         if anciennete < 3:
             anciennete = 0

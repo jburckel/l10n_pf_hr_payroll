@@ -3,13 +3,20 @@
 
 {
     'name': 'French Polynesia Payroll',
+    'version': '18.0.1.0.0',
     'category': 'Localization',
+    'summary': 'French Polynesia payroll localization',
+    'author': 'Your Company',
+    'website': 'https://www.yourcompany.com',
     'depends': ['payroll', 'l10n_pf', 'hr_holidays'],
     'description': """
 French Polynesia Payroll Rules.
 =====================
 
     - Configuration of hr_payroll for French Polynesia localization
+    - Salary rules specific to French Polynesia legislation
+    - Leave management integration
+    - Payslip reports in French
     """,
     'data': [
         'views/l10n_pf_hr_payroll_view.xml',
@@ -17,4 +24,8 @@ French Polynesia Payroll Rules.
         'report/l10n_pf_hr_payroll_report.xml',
 	    'report/report_fiche_paye.xml'
     ],
+    'installable': True,
+    'auto_install': False,
+    'application': False,
+    'license': 'LGPL-3',
 }
