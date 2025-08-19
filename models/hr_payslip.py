@@ -79,7 +79,7 @@ class HrPayslip(models.Model):
                 limit=1)
             if contract:
                 self.contract_id = contract[0]
-                self.struct_id = contract[0].struct_id
+                # self.struct_id = contract[0].struct_id
                 self.conge_acquis = contract[0].conge_mensuel
                 self.anciennete = contract[0].taux_anciennete
                 self.heure_contrat = contract[0].heure_mensuelle
