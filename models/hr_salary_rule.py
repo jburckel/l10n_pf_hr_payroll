@@ -15,12 +15,7 @@ class HRSalaryRule(models.Model):
                  and the rate
         :rtype: (float, float, float)
         """
-        rule = super(HRSalaryRule, self)._compute_rule(localdict)
-        
-        amount = rule["amount"]
-        quantity = rule["quantity"]
-        rate = rule["rate"]
-        name = rule["name"]
+        amount, quantity, rate = super(HRSalaryRule, self)._compute_rule(localdict)
 
         if self.amount_select == "code" and self.amount_python_base:
             try:
@@ -39,9 +34,8 @@ Here is the error received:
                     )
                     % (self.name, self.code, repr(ex))
                 )
-        return {
-            "amount": round(amount),
-            "quantity": round(quantity, 2),
-            "rate": round(rate, 2),
-            "name": name
-        }
+        return (
+            round(amount),
+            round(quantity, 2),
+            round(rate, 2)
+        )
