@@ -178,7 +178,7 @@
         <record model="ir.ui.view" id="salary_rule__view_form_inherit">
             <field name="name">hr_salary.rule.inherit</field>
             <field name="model">hr.salary.rule</field>
-            <field name="inherit_id" ref="payroll.hr_salary_rule_view_form" />
+            <field name="inherit_id" ref="hr_payroll.hr_salary_rule_form" />
             <field name="priority" eval="50" />
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='amount_python_compute']" position="before">
