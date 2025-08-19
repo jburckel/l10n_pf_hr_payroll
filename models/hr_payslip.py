@@ -218,7 +218,7 @@ class HrPayslip(models.Model):
                 WHERE
                     state='validate' AND 
                     employee_id=%s AND
-                    holiday_status_id=%
+                    holiday_status_id=%s
             """
             params = [self.employee_id.id, self._get_parameter_holiday_type()]
             if validated is not None:
