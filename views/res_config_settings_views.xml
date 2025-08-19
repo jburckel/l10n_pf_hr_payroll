@@ -4,7 +4,7 @@
         <field name="name">res.config.settings.view.form.inherit.hr.payroll</field>
         <field name="model">res.config.settings</field>
         <field name="priority" eval="45" />
-        <field name="inherit_id" ref="payroll.res_config_settings_view_form" />
+        <field name="inherit_id" ref="hr_payroll.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//block[@id='hr_payroll_settings']" position="after">
                 <block title="Gestion des congés" id="hr_payroll_leaves_settings">
