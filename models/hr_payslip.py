@@ -221,9 +221,9 @@ class HrPayslip(models.Model):
                     holiday_status_id={1}
             """).format(self.employee_id.id, self._get_parameter_holiday_type())
             if validated is not None:
-                validated_string = 'True' if validated else 'False'
+                validated_string = 'done' if validated else 'normal'
                 sql_query += ("""
-                        AND payslip_status={0}
+                        AND payslip_state={0}
                 """).format(validated_string)
             self._cr.execute(sql_query)
             result = self._cr.dictfetchall()
@@ -235,7 +235,7 @@ class HrPayslip(models.Model):
             leaves_db = self.env['hr.leave'].search(
                 [
                     ('employee_id', '=', payslip.employee_id.id),
-                    ('payslip_status', '=', False),
+                    ('payslip_state', 'in', ['normal']),
                     ('holiday_status_id', '=', self._get_parameter_holiday_type())
                 ]
             )
@@ -281,4 +281,4 @@ class HrPayslip(models.Model):
 
     def close_saved_leaves(self):
         for leave in self.conge_enregistre_ids:
-            leave.write({'payslip_status': True})
+            leave.write({'payslip_state': 'done'})
