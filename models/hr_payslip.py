@@ -211,21 +211,23 @@ class HrPayslip(models.Model):
 
     def _get_sum_leave(self, validated=True):
         if self.employee_id:
-            sql_query = ("""
+            sql_query = """
                 SELECT
                     sum(number_of_days) AS days
                 FROM hr_leave
                 WHERE
                     state='validate' AND 
-                    employee_id={0} AND
-                    holiday_status_id={1}
-            """).format(self.employee_id.id, self._get_parameter_holiday_type())
+                    employee_id=%s AND
+                    holiday_status_id=%
+            """
+            params = [self.employee_id.id, self._get_parameter_holiday_type()]
             if validated is not None:
                 validated_string = 'done' if validated else 'normal'
                 sql_query += ("""
-                        AND payslip_state={0}
-                """).format(validated_string)
-            self._cr.execute(sql_query)
+                        AND payslip_state=%s
+                """)
+                params.append(validated_string)
+            self._cr.execute(sql_query, params)
             result = self._cr.dictfetchall()
             return result[0]['days'] if (len(result) and result[0]['days'] is not None) else 0
         return 0
