@@ -21,8 +21,8 @@ French Polynesia Payroll Rules.
     'data': [
         'views/l10n_pf_hr_payroll_view.xml',
         'views/res_config_settings_views.xml',
+        'report/report_fiche_paye.xml',
         'report/l10n_pf_hr_payroll_report.xml',
-	    'report/report_fiche_paye.xml'
     ],
     'installable': True,
     'auto_install': False,
