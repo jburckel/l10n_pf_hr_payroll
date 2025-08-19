@@ -4,47 +4,27 @@
         <field name="name">res.config.settings.view.form.inherit.hr.payroll</field>
         <field name="model">res.config.settings</field>
         <field name="priority" eval="45" />
-        <field name="inherit_id" ref="base.res_config_settings_view_form" />
+        <field name="inherit_id" ref="payroll.res_config_settings_view_form" />
         <field name="arch" type="xml">
-            <xpath expr="//div[@data-key='payroll']" position="inside">
-                <h2>Leaves</h2>
-                <div class="row mt16 o_settings_container" id="payroll_accountant">
-                    <div class="col-lg-6 col-12 o_setting_box">
-                        <div class="o_setting_left_pane">
-                            <field name="add_leave_attribution_when_done" />
-                        </div>
-                        <div class="o_setting_right_pane">
-                            <label
-                                    for="add_leave_attribution_when_done"
-                                    string="Ajouter une attribution lors de la validation des bulletins"
-                            />
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-12 o_setting_box">
-                        <div class="o_setting_left_pane">
-                            <field name="validate_leave_when_done" />
-                        </div>
-                        <div class="o_setting_right_pane">
-                            <label
-                                    for="validate_leave_when_done"
-                                    string="Valider les congés enregistrés sur le bulletin"
-                            />
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-12 o_setting_box">
-                        <div class="o_setting_right_pane">
-                            <label
-                                    for="holiday_code"
-                                    string="Type de congés à utiliser pour les congés payés"
-                            />
-                            <div class="content-group">
-                                <div class="mt16">
-                                    <field name="holiday_code" />
-                                </div>
+            <xpath expr="//block[@id='hr_payroll_settings']" position="after">
+                <block title="Gestion des congés" id="hr_payroll_leaves_settings">
+                    <setting string="Attribution automatique de congés" 
+                             help="Ajouter automatiquement une attribution de congés lors de la validation des bulletins">
+                        <field name="add_leave_attribution_when_done"/>
+                    </setting>
+                    <setting string="Validation automatique des congés" 
+                             help="Valider automatiquement les congés enregistrés sur le bulletin lors de sa validation">
+                        <field name="validate_leave_when_done"/>
+                    </setting>
+                    <setting string="Type de congés payés" 
+                             help="Définir le type de congés à utiliser pour les congés payés">
+                        <div class="content-group">
+                            <div class="mt16">
+                                <field name="holiday_code" placeholder="Sélectionner le type de congés"/>
                             </div>
                         </div>
-                    </div>
-                </div>
+                    </setting>
+                </block>
             </xpath>
         </field>
     </record>
